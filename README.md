@@ -92,8 +92,8 @@ FastAPI: API 서버 (선택)
 **LLM 환경**:
 ```
 vLLM: 고성능 추론 서버
-모델: Qwen/Qwen2.5-3B-Instruct
-VRAM 사용량: ~6GB
+모델: Qwen/Qwen2.5-1.5B-Instruct
+VRAM 사용량: ~3GB 예상
 ```
 
 **벡터 데이터베이스**:

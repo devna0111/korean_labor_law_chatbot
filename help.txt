@@ -1,0 +1,43 @@
+# docker로 weaviate 저장 및 실행 : port 8080
+docker run -d \
+  --name weaviate \
+  -p 8080:8080 \
+  -p 50051:50051 \
+  -e QUERY_DEFAULTS_LIMIT=25 \
+  -e AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED=true \
+  -e PERSISTENCE_DATA_PATH='/var/lib/weaviate' \
+  -e DEFAULT_VECTORIZER_MODULE='none' \
+  -e ENABLE_MODULES='' \
+  -e CLUSTER_HOSTNAME='node1' \
+  semitechnologies/weaviate:1.27.1
+
+# API 엔드포인트 테스트 
+curl http://localhost:8080/v1/meta
+
+# Qwen2.5-1.5B-Instruct 모델 다운로드
+huggingface-cli download Qwen/Qwen2.5-1.5B-Instruct \
+  --local-dir ./models/qwen2.5-1.5b \
+  --local-dir-use-symlinks False
+
+# vLLM 서버 시작 (새 터미널)
+python -m vllm.entrypoints.openai.api_server \
+  --model ./models/qwen2.5-1.5b \
+  --dtype half \
+  --max-model-len 2048 \
+  --gpu-memory-utilization 0.85 \
+  --port 8000
+
+
+# 모든 서비스 테스트
+
+# 1. Ollama 서비스
+curl http://localhost:11434/api/tags
+
+# 2. Weaviate
+curl http://localhost:8080/v1/meta
+
+# 3. vLLM
+curl http://localhost:8000/v1/models
+
+# 4. Python 패키지
+python -c "import langchain, weaviate, vllm; print('OK')"

@@ -11,6 +11,7 @@ langgraph==0.2.45
 # LLM 추론 서버
 vllm==0.6.3.post1
 openai==1.54.4  # vLLM OpenAI 호환 인터페이스
+huggingface-hub
 
 # 벡터 데이터베이스
 weaviate-client==4.9.3
