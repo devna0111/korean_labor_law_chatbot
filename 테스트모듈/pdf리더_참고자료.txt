@@ -1,0 +1,13 @@
+모두 langchain_communiy.document_loaders에 있는 PDF 리더들
+
+1단계 (현재): TextLoader
+   → 샘플 데이터 (.txt)
+   → 가장 확실
+   
+2단계 (확장): PyPDFLoader  
+   → 법령 PDF 다운로드
+   → 이미지 무시해도 문제없음
+   
+3단계 (고급): PDFPlumberLoader
+   → 표가 중요한 경우만
+   → 대부분 필요 없음
